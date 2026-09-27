@@ -2,14 +2,13 @@ from __future__ import annotations
 
 from datetime import date
 from decimal import Decimal
-from typing import Optional
 
 from pydantic import BaseModel, EmailStr, Field
 
 
 class DepartmentBase(BaseModel):
     department_name: str = Field(..., min_length=1, max_length=100)
-    location: Optional[str] = Field(None, max_length=100)
+    location: str | None = Field(None, max_length=100)
 
 
 class DepartmentCreate(DepartmentBase):
@@ -17,8 +16,8 @@ class DepartmentCreate(DepartmentBase):
 
 
 class DepartmentUpdate(BaseModel):
-    department_name: Optional[str] = Field(None, min_length=1, max_length=100)
-    location: Optional[str] = Field(None, max_length=100)
+    department_name: str | None = Field(None, min_length=1, max_length=100)
+    location: str | None = Field(None, max_length=100)
 
 
 class DepartmentOut(DepartmentBase):
@@ -29,11 +28,11 @@ class EmployeeBase(BaseModel):
     first_name: str = Field(..., min_length=1, max_length=50)
     last_name: str = Field(..., min_length=1, max_length=50)
     email: EmailStr
-    phone: Optional[str] = Field(None, max_length=20)
-    hire_date: Optional[date] = None
-    job_title: Optional[str] = Field(None, max_length=80)
-    salary: Optional[Decimal] = None
-    department_id: Optional[int] = None
+    phone: str | None = Field(None, max_length=20)
+    hire_date: date | None = None
+    job_title: str | None = Field(None, max_length=80)
+    salary: Decimal | None = None
+    department_id: int | None = None
 
 
 class EmployeeCreate(EmployeeBase):
@@ -41,14 +40,14 @@ class EmployeeCreate(EmployeeBase):
 
 
 class EmployeeUpdate(BaseModel):
-    first_name: Optional[str] = Field(None, min_length=1, max_length=50)
-    last_name: Optional[str] = Field(None, min_length=1, max_length=50)
-    email: Optional[EmailStr] = None
-    phone: Optional[str] = Field(None, max_length=20)
-    hire_date: Optional[date] = None
-    job_title: Optional[str] = Field(None, max_length=80)
-    salary: Optional[Decimal] = None
-    department_id: Optional[int] = None
+    first_name: str | None = Field(None, min_length=1, max_length=50)
+    last_name: str | None = Field(None, min_length=1, max_length=50)
+    email: EmailStr | None = None
+    phone: str | None = Field(None, max_length=20)
+    hire_date: date | None = None
+    job_title: str | None = Field(None, max_length=80)
+    salary: Decimal | None = None
+    department_id: int | None = None
 
 
 class EmployeeOut(EmployeeBase):

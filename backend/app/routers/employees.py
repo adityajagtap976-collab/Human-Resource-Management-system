@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from typing import Optional
-
 import oracledb
 from fastapi import APIRouter, HTTPException, Query
 
@@ -13,7 +11,7 @@ router = APIRouter(prefix="/employees", tags=["employees"])
 
 
 @router.get("", response_model=list[EmployeeOut])
-def list_employees(department_id: Optional[int] = Query(default=None)):
+def list_employees(department_id: int | None = Query(default=None)):
     return crud.list_employees(department_id)
 
 

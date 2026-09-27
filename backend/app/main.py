@@ -8,7 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 load_dotenv()
 
-from .routers import departments, employees  # noqa: E402  (after load_dotenv)
+from .routers import departments, employees
 
 app = FastAPI(
     title="HRMS API",

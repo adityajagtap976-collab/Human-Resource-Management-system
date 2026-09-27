@@ -22,15 +22,15 @@ Optional:
 from __future__ import annotations
 
 import os
+from collections.abc import Iterator
 from contextlib import contextmanager
-from typing import Iterator
 
 import oracledb
 
-_pool: "oracledb.ConnectionPool | None" = None
+_pool: oracledb.ConnectionPool | None = None
 
 
-def _get_pool() -> "oracledb.ConnectionPool":
+def _get_pool() -> oracledb.ConnectionPool:
     global _pool
     if _pool is not None:
         return _pool
@@ -57,7 +57,7 @@ def _get_pool() -> "oracledb.ConnectionPool":
 
 
 @contextmanager
-def get_connection() -> Iterator["oracledb.Connection"]:
+def get_connection() -> Iterator[oracledb.Connection]:
     pool = _get_pool()
     conn = pool.acquire()
     try:
@@ -66,7 +66,7 @@ def get_connection() -> Iterator["oracledb.Connection"]:
         pool.release(conn)
 
 
-def dict_rowfactory(cursor: "oracledb.Cursor"):
+def dict_rowfactory(cursor: oracledb.Cursor):
     columns = [col[0].lower() for col in cursor.description]
 
     def row_to_dict(*args):

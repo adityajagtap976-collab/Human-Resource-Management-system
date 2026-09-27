@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from fastapi import HTTPException
 import oracledb
+from fastapi import HTTPException
 
 # Oracle error codes worth translating into meaningful HTTP responses
 # instead of a raw 500 with an ORA- stack trace.

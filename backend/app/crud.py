@@ -8,15 +8,15 @@ string-format user input into SQL, full stop.
 
 from __future__ import annotations
 
-from typing import Any, Optional
+from typing import Any
 
-from .db import get_connection, dict_rowfactory
+from .db import dict_rowfactory, get_connection
 
 # ---------------------------------------------------------------- helpers
 
-def _fetch_one(cursor) -> Optional[dict]:
-    row = cursor.fetchone()
-    return row if row is None else row
+
+def _fetch_one(cursor) -> dict | None:
+    return cursor.fetchone()
 
 
 def _fetch_all(cursor) -> list[dict]:
@@ -24,6 +24,7 @@ def _fetch_all(cursor) -> list[dict]:
 
 
 # ------------------------------------------------------------- departments
+
 
 def list_departments() -> list[dict]:
     with get_connection() as conn:
@@ -36,7 +37,7 @@ def list_departments() -> list[dict]:
         return _fetch_all(cur)
 
 
-def get_department(department_id: int) -> Optional[dict]:
+def get_department(department_id: int) -> dict | None:
     with get_connection() as conn:
         cur = conn.cursor()
         cur.execute(
@@ -48,7 +49,7 @@ def get_department(department_id: int) -> Optional[dict]:
         return _fetch_one(cur)
 
 
-def create_department(department_name: str, location: Optional[str]) -> dict:
+def create_department(department_name: str, location: str | None) -> dict:
     with get_connection() as conn:
         cur = conn.cursor()
         new_id_var = cur.var(int)
@@ -71,7 +72,7 @@ def create_department(department_name: str, location: Optional[str]) -> dict:
         }
 
 
-def update_department(department_id: int, fields: dict[str, Any]) -> Optional[dict]:
+def update_department(department_id: int, fields: dict[str, Any]) -> dict | None:
     if not fields:
         return get_department(department_id)
 
@@ -109,7 +110,7 @@ _EMPLOYEE_COLUMNS = (
 )
 
 
-def list_employees(department_id: Optional[int] = None) -> list[dict]:
+def list_employees(department_id: int | None = None) -> list[dict]:
     with get_connection() as conn:
         cur = conn.cursor()
         if department_id is not None:
@@ -126,7 +127,7 @@ def list_employees(department_id: Optional[int] = None) -> list[dict]:
         return _fetch_all(cur)
 
 
-def get_employee(employee_id: int) -> Optional[dict]:
+def get_employee(employee_id: int) -> dict | None:
     with get_connection() as conn:
         cur = conn.cursor()
         cur.execute(
@@ -159,7 +160,7 @@ def create_employee(data: dict[str, Any]) -> dict:
     return get_employee(new_id)  # type: ignore[return-value]
 
 
-def update_employee(employee_id: int, fields: dict[str, Any]) -> Optional[dict]:
+def update_employee(employee_id: int, fields: dict[str, Any]) -> dict | None:
     if not fields:
         return get_employee(employee_id)
 
@@ -181,9 +182,7 @@ def update_employee(employee_id: int, fields: dict[str, Any]) -> Optional[dict]:
 def delete_employee(employee_id: int) -> bool:
     with get_connection() as conn:
         cur = conn.cursor()
-        cur.execute(
-            "DELETE FROM employees WHERE employee_id = :id", id=employee_id
-        )
+        cur.execute("DELETE FROM employees WHERE employee_id = :id", id=employee_id)
         deleted = cur.rowcount > 0
         conn.commit()
         return deleted
