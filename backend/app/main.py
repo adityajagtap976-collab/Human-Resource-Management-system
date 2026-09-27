@@ -12,7 +12,7 @@ from .routers import departments, employees
 
 app = FastAPI(
     title="HRMS API",
-    description="Employee & Department CRUD backed by Oracle 19c",
+    description="Employee & Department CRUD backed by Oracle 21c",
     version="1.0.0",
 )
 

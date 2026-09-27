@@ -1,9 +1,15 @@
 from __future__ import annotations
 
-from datetime import date
+from datetime import date, datetime
 from decimal import Decimal
 
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, EmailStr, Field, field_validator
+
+
+def _coerce_date(v):
+    if isinstance(v, datetime):
+        return v.date()
+    return v
 
 
 class DepartmentBase(BaseModel):
@@ -34,6 +40,11 @@ class EmployeeBase(BaseModel):
     salary: Decimal | None = None
     department_id: int | None = None
 
+    @field_validator("hire_date", mode="before")
+    @classmethod
+    def _normalize_hire_date(cls, v):
+        return _coerce_date(v)
+
 
 class EmployeeCreate(EmployeeBase):
     pass
@@ -48,6 +59,11 @@ class EmployeeUpdate(BaseModel):
     job_title: str | None = Field(None, max_length=80)
     salary: Decimal | None = None
     department_id: int | None = None
+
+    @field_validator("hire_date", mode="before")
+    @classmethod
+    def _normalize_hire_date(cls, v):
+        return _coerce_date(v)
 
 
 class EmployeeOut(EmployeeBase):

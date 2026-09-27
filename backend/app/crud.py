@@ -1,11 +1,3 @@
-"""
-Deliberately raw SQL, not an ORM. This is an Oracle-backed HRMS with two
-tables — an ORM buys you nothing here except another layer to debug when
-the Oracle dialect quirks (IDENTITY columns, RETURNING INTO, NUMBER vs
-Decimal) inevitably surface. Every statement uses bind variables — never
-string-format user input into SQL, full stop.
-"""
-
 from __future__ import annotations
 
 from typing import Any

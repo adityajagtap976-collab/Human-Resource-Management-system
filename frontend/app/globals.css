@@ -3,6 +3,7 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  color-scheme: light;
 }
 
 @theme inline {
@@ -16,6 +17,7 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    color-scheme: dark;
   }
 }
 
@@ -38,4 +40,9 @@ body {
   .input {
     border-color: rgb(255 255 255 / 0.2);
   }
+}
+
+.input option {
+  color: #171717;
+  background: #ffffff;
 }
