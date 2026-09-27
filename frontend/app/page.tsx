@@ -5,7 +5,7 @@ export default function Home() {
     <main className="mx-auto flex max-w-2xl flex-1 flex-col items-start justify-center gap-6 px-6 py-20">
       <h1 className="text-3xl font-semibold">HR Management System</h1>
       <p className="text-black/60 dark:text-white/60">
-        Employee &amp; Department management backed by Oracle 19c via a FastAPI service.
+        Employee &amp; Department management backed by Oracle 21c via a FastAPI service.
       </p>
       <div className="flex gap-4">
         <Link

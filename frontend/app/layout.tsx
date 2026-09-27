@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "HRMS — Employee & Department Management",
-  description: "CRUD for employees and departments, backed by Oracle 19c.",
+  description: "CRUD for employees and departments, backed by Oracle 21c.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
