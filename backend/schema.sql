@@ -69,10 +69,3 @@ insert into departments (
 ) values
    ( 'Sales',
      'Bangalore' );
-
-
-select username,
-       account_status,
-       lock_date
-  from dba_users
- where username = upper('hrms_app');
