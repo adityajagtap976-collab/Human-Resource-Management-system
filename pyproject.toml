@@ -1,0 +1,26 @@
+[project]
+name = "human-resource-management-system"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "adityajagtap976-collab", email = "adityajagtap976@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi==0.117.1",
+    "uvicorn[standard]==0.34.0",
+    "oracledb==2.5.1",
+    "pydantic==2.10.4",
+    "python-dotenv==1.0.1",
+]
+
+[project.scripts]
+human-resource-management-system = "backend.app.main:app"
+
+[build-system]
+requires = ["uv_build>=0.12.19,<0.13.0"]
+build-backend = "uv_build"
+
+[tool.uv]
+package = false
