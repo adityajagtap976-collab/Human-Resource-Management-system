@@ -1,5 +1,6 @@
 const API_BASE =
-  process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "") ?? "http://localhost:8000";
+  process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "") ??
+  "http://localhost:8000";
 
 export type Department = {
   department_id: number;
@@ -44,11 +45,19 @@ class ApiError extends Error {
 }
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
-  const res = await fetch(`${API_BASE}${path}`, {
-    ...init,
-    headers: { "Content-Type": "application/json", ...init?.headers },
-    cache: "no-store",
-  });
+  let res: Response;
+  try {
+    res = await fetch(`${API_BASE}${path}`, {
+      ...init,
+      headers: { "Content-Type": "application/json", ...init?.headers },
+      cache: "no-store",
+    });
+  } catch {
+    throw new ApiError(
+      0,
+      `Cannot reach the API at ${API_BASE}. Is the backend running? (try ${API_BASE}/health)`,
+    );
+  }
 
   if (!res.ok) {
     let detail = res.statusText;
@@ -69,23 +78,37 @@ export const departmentsApi = {
   list: () => request<Department[]>("/departments"),
   get: (id: number) => request<Department>(`/departments/${id}`),
   create: (data: DepartmentInput) =>
-    request<Department>("/departments", { method: "POST", body: JSON.stringify(data) }),
+    request<Department>("/departments", {
+      method: "POST",
+      body: JSON.stringify(data),
+    }),
   update: (id: number, data: Partial<DepartmentInput>) =>
-    request<Department>(`/departments/${id}`, { method: "PUT", body: JSON.stringify(data) }),
-  remove: (id: number) => request<void>(`/departments/${id}`, { method: "DELETE" }),
+    request<Department>(`/departments/${id}`, {
+      method: "PUT",
+      body: JSON.stringify(data),
+    }),
+  remove: (id: number) =>
+    request<void>(`/departments/${id}`, { method: "DELETE" }),
 };
 
 export const employeesApi = {
   list: (departmentId?: number) =>
     request<Employee[]>(
-      departmentId ? `/employees?department_id=${departmentId}` : "/employees"
+      departmentId ? `/employees?department_id=${departmentId}` : "/employees",
     ),
   get: (id: number) => request<Employee>(`/employees/${id}`),
   create: (data: EmployeeInput) =>
-    request<Employee>("/employees", { method: "POST", body: JSON.stringify(data) }),
+    request<Employee>("/employees", {
+      method: "POST",
+      body: JSON.stringify(data),
+    }),
   update: (id: number, data: Partial<EmployeeInput>) =>
-    request<Employee>(`/employees/${id}`, { method: "PUT", body: JSON.stringify(data) }),
-  remove: (id: number) => request<void>(`/employees/${id}`, { method: "DELETE" }),
+    request<Employee>(`/employees/${id}`, {
+      method: "PUT",
+      body: JSON.stringify(data),
+    }),
+  remove: (id: number) =>
+    request<void>(`/employees/${id}`, { method: "DELETE" }),
 };
 
 export { ApiError };
