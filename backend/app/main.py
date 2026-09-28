@@ -13,6 +13,7 @@ load_dotenv()
 import oracledb
 
 from .db import DatabaseUnavailable, get_connection
+from .errors import LOCK_TIMEOUT_MESSAGE, is_call_timeout
 from .routers import departments, employees
 
 log = logging.getLogger("hrms")
@@ -40,6 +41,8 @@ async def _db_unavailable(_: Request, exc: DatabaseUnavailable):
 @app.exception_handler(oracledb.Error)
 async def _oracle_error(_: Request, exc: oracledb.Error):
     log.exception("Unhandled Oracle error")
+    if is_call_timeout(exc):
+        return JSONResponse(status_code=503, content={"detail": LOCK_TIMEOUT_MESSAGE})
     first_line = str(exc).splitlines()[0]
     return JSONResponse(
         status_code=500, content={"detail": f"Database error: {first_line}"}
