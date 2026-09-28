@@ -44,6 +44,21 @@ class ApiError extends Error {
   }
 }
 
+// FastAPI sends a string for our own errors, but a list of {loc, msg} objects
+// for validation (422) errors. Turn both into one readable sentence.
+function formatDetail(d: unknown): string | undefined {
+  if (typeof d === "string") return d;
+  if (Array.isArray(d)) {
+    return d
+      .map((e: { loc?: (string | number)[]; msg?: string }) => {
+        const field = e.loc?.filter((p) => p !== "body").join(" ");
+        return field ? `${field}: ${e.msg}` : (e.msg ?? "Invalid value");
+      })
+      .join("; ");
+  }
+  return undefined;
+}
+
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   let res: Response;
   try {
@@ -63,7 +78,7 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
     let detail = res.statusText;
     try {
       const body = await res.json();
-      detail = body.detail ?? detail;
+      detail = formatDetail(body.detail) ?? detail;
     } catch {
       // response had no JSON body — fall back to statusText
     }

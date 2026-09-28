@@ -191,7 +191,7 @@ export default function EmployeesPage() {
           <table className="w-full min-w-[720px] border-collapse text-sm">
             <thead>
               <tr className="border-b border-black/10 text-left">
-                <th className="py-2 pr-2">ID</th>
+                <th className="py-2 pr-2">#</th>
                 <th className="py-2 pr-2">Name</th>
                 <th className="py-2 pr-2">Email</th>
                 <th className="py-2 pr-2">Job title</th>
@@ -201,9 +201,9 @@ export default function EmployeesPage() {
               </tr>
             </thead>
             <tbody>
-              {employees.map((emp) => (
+              {employees.map((emp, i) => (
                 <tr key={emp.employee_id} className="border-b border-black/5">
-                  <td className="py-2 pr-2">{emp.employee_id}</td>
+                  <td className="py-2 pr-2">{i + 1}</td>
                   <td className="py-2 pr-2">
                     {emp.first_name} {emp.last_name}
                   </td>

@@ -70,7 +70,7 @@ export default function DepartmentsPage() {
   }
 
   async function handleDelete(id: number) {
-    if (!confirm("Delete this department? Employees in it will keep their record but lose the department link.")) {
+    if (!confirm("Delete this department? This is only allowed if no employees belong to it.")) {
       return;
     }
     setError(null);
@@ -143,16 +143,16 @@ export default function DepartmentsPage() {
         <table className="w-full border-collapse text-sm">
           <thead>
             <tr className="border-b border-black/10 text-left">
-              <th className="py-2 pr-2">ID</th>
+              <th className="py-2 pr-2">#</th>
               <th className="py-2 pr-2">Name</th>
               <th className="py-2 pr-2">Location</th>
               <th className="py-2 pr-2"></th>
             </tr>
           </thead>
           <tbody>
-            {departments.map((dept) => (
+            {departments.map((dept, i) => (
               <tr key={dept.department_id} className="border-b border-black/5">
-                <td className="py-2 pr-2">{dept.department_id}</td>
+                <td className="py-2 pr-2">{i + 1}</td>
                 <td className="py-2 pr-2">{dept.department_name}</td>
                 <td className="py-2 pr-2">{dept.location ?? "—"}</td>
                 <td className="py-2 pr-2 text-right">
